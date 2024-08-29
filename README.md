@@ -1,1 +1,2 @@
-# rss_feed_go_lang
+# youtube_rss_feed
+Made with Go and Next.js
