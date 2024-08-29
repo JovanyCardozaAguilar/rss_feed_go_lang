@@ -75,7 +75,7 @@ type Statistics struct {
 
 func main() {
 	// YouTube channel url
-	url := "https://www.youtube.com/feeds/videos.xml?channel_id=UCr3L56DsMxhNtHqtm2AIsMw"
+	url := "https://www.youtube.com/feeds/videos.xml?channel_id=UC_O58Rr2DOskJvs9bArpLkQ"
 
 	// Fetch the RSS feed
 	resp, err := http.Get(url)
@@ -108,8 +108,8 @@ func main() {
 		fmt.Println("Link:", entry.Link.Href)
 		fmt.Println("Published:", entry.Published)
 		fmt.Println("Updated:", entry.Updated)
-		fmt.Println("Description:", entry.Group.Description)
 		fmt.Println("Thumbnail URL:", entry.Group.Thumbnail.URL)
+		fmt.Println("Description:", entry.Group.Description)
 		fmt.Println()
 	}
 }
