@@ -1,2 +1,2 @@
 # youtube_rss_feed
-Made with Go and Next.js
+Made with Go,  Next.js, and Firebase
