@@ -15,15 +15,16 @@ type Feed struct {
 }
 
 type Entry struct {
-	ID        string `xml:"id"`
-	VideoId   string `xml:"videoId"`
-	ChannelId string `xml:"channelId"`
-	Title     string `xml:"title"`
-	Link      Link   `xml:"link"`
-	Author    Author `xml:"author"`
-	Published string `xml:"published"`
-	Updated   string `xml:"updated"`
-	Group     Group  `xml:"group"`
+	ID         string `xml:"id"`
+	VideoId    string `xml:"videoId"`
+	ChannelId  string `xml:"channelId"`
+	Title      string `xml:"title"`
+	Link       Link   `xml:"link"`
+	Author     Author `xml:"author"`
+	Published  string `xml:"published"`
+	Updated    string `xml:"updated"`
+	Group      Group  `xml:"group"`
+	MarkedSeen bool
 }
 
 type Link struct {
@@ -73,6 +74,10 @@ type Statistics struct {
 	Views string `xml:"views,attr"`
 }
 
+type VideosMap struct {
+	VideoInfo Entry
+}
+
 func main() {
 	// YouTube channel url
 	url := "https://www.youtube.com/feeds/videos.xml?channel_id=UC_O58Rr2DOskJvs9bArpLkQ"
@@ -101,15 +106,38 @@ func main() {
 		log.Fatalf("Error parsing XML: %v", err)
 	}
 
-	// Print each entry
+	videos_map := make(map[string]VideosMap)
 	for _, entry := range feed.Entries {
-		fmt.Println("Author:", entry.Author.Name)
-		fmt.Println("Title:", entry.Title)
-		fmt.Println("Link:", entry.Link.Href)
-		fmt.Println("Published:", entry.Published)
-		fmt.Println("Updated:", entry.Updated)
-		fmt.Println("Thumbnail URL:", entry.Group.Thumbnail.URL)
-		fmt.Println("Description:", entry.Group.Description)
+		videos_map[entry.VideoId] = VideosMap{entry}
+	}
+
+	/*
+		// Print each entry
+		for _, entry := range feed.Entries {
+			fmt.Println("Author:", entry.Author.Name)
+			fmt.Println("Title:", entry.Title)
+			fmt.Println("Link:", entry.Link.Href)
+			fmt.Println("Published:", entry.Published)
+			fmt.Println("Updated:", entry.Updated)
+			fmt.Println("Thumbnail URL:", entry.Group.Thumbnail.URL)
+			fmt.Println("Description:", entry.Group.Description)
+			fmt.Println("Video ID:", entry.VideoId)
+			fmt.Println("Seen:", entry.MarkedSeen)
+			fmt.Println()
+		}
+	*/
+
+	for _, data := range videos_map {
+		fmt.Println("Author:", data.VideoInfo.Author)
+		fmt.Println("Title:", data.VideoInfo.Title)
+		fmt.Println("Link:", data.VideoInfo.Link.Href)
+		fmt.Println("Published:", data.VideoInfo.Published)
+		fmt.Println("Updated:", data.VideoInfo.Updated)
+		fmt.Println("Thumbnail URL:", data.VideoInfo.Group.Thumbnail.URL)
+		fmt.Println("Description:", data.VideoInfo.Group.Description)
+		fmt.Println("Video ID:", data.VideoInfo.VideoId)
+		fmt.Println("Seen:", data.VideoInfo.MarkedSeen)
 		fmt.Println()
 	}
+
 }
